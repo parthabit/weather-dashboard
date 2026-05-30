@@ -6,35 +6,23 @@ const APP = {
     apiKey: null
 };
 
-// Load API key from backend immediately
+// Load API key from Render backend
 fetch('/api/config')
     .then(res => res.json())
     .then(config => {
-        APP.apiKey = config.api_key;
-        console.log('✅ API Key Loaded:', APP.apiKey ? 'YES' : 'NO');
-        // Initialize app after API key is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initApp);
-        } else {
-            initApp();
+        if (config.api_key) {
+            APP.apiKey = config.api_key;
+            console.log('✅ API Key Loaded from Render');
+            // Try to fetch weather after API key loads
+            setTimeout(() => {
+                if (APP.apiKey) {
+                    fetchWeather('London');
+                }
+            }, 500);
         }
     })
-    .catch(err => {
-        console.error('❌ Failed to load API key:', err);
-        showError('Failed to load API key from server');
-    });
+    .catch(err => console.error('Config error:', err));
 
-function initApp() {
-    loadTheme();
-    loadHistory();
-    attachAllListeners();
-    
-    if (APP.apiKey) {
-        fetchWeather('London');
-    } else {
-        showError('⚠️ API key not available');
-    }
-}
 const DOM = {
     search: () => document.getElementById('searchInput'),
     geoBtn: () => document.getElementById('geoBtn'),
@@ -68,12 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
     attachListeners();
     
+    // Fallback: check localStorage for API key
     const key = localStorage.getItem('api_key');
-    if (key) {
+    if (key && !APP.apiKey) {
         APP.apiKey = key;
         fetchWeather('London');
-    } else {
-        showError('⚠️ No API key set. Run: localStorage.setItem("api_key", "YOUR_KEY")');
     }
 });
 
@@ -173,7 +160,6 @@ function updateWeatherDisplay(d) {
     const sunrise = new Date(d.sys.sunrise * 1000);
     const sunset = new Date(d.sys.sunset * 1000);
 
-    // Basic info
     DOM.cityName().textContent = `${d.name}, ${d.sys.country}`;
     DOM.dateTime().textContent = formatDate(now);
     DOM.temperature().textContent = Math.round(temp) + '°';
@@ -182,16 +168,9 @@ function updateWeatherDisplay(d) {
     DOM.sunrise().textContent = formatTime(sunrise);
     DOM.sunset().textContent = formatTime(sunset);
 
-    // Greeting
     updateGreeting(now);
-
-    // AI Message
     generateAIMessage(d);
-
-    // Metrics
     displayMetrics(d);
-
-    // Theme
     applyTheme(d, now);
 
     DOM.weather().style.display = 'block';
@@ -480,4 +459,3 @@ function debounce(fn, delay) {
 }
 
 console.log('%c✅ Dashboard Ready!', 'color: green; font-size: 14px;');
-console.log('%cSet API Key: localStorage.setItem("api_key", "YOUR_KEY")', 'color: blue;');
