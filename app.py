@@ -10,6 +10,11 @@ app = Flask(__name__)
 
 # API Keys - Get from environment variables
 OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY', 'your_api_key_here')
+@app.route('/api/config')
+def get_config():
+    return jsonify({
+        'api_key': os.getenv('OPENWEATHER_API_KEY')
+    })
 AQI_API_KEY = os.getenv('AQI_API_KEY', 'your_aqi_api_key_here')
 
 # Constants
