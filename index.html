@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Weather Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="rain-container" id="rainContainer"></div>
+    <div class="snow-container" id="snowContainer"></div>
+    <div class="stars-container" id="starsContainer"></div>
+
+    <div class="main-container">
+        <!-- HEADER -->
+        <header class="header">
+            <h1 class="title"><i class="fas fa-cloud-sun"></i> Smart Weather</h1>
+            <div class="header-buttons">
+                <button class="btn" id="tempBtn" title="Toggle Temperature Unit">°C</button>
+                <button class="btn" id="themeBtn" title="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
+            </div>
+        </header>
+
+        <!-- GREETING -->
+        <div class="greeting" id="greeting">Good Morning ☀️</div>
+
+        <!-- SEARCH SECTION -->
+        <div class="search-section">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Search city... (e.g., London, Paris, Tokyo)"
+                    autocomplete="off"
+                >
+                <button class="btn-location" id="geoBtn" title="Get Your Location">
+                    <i class="fas fa-location-dot"></i>
+                </button>
+            </div>
+            <div class="suggestions-box" id="suggestionsBox"></div>
+            <div class="history-section">
+                <div id="history" class="history"></div>
+            </div>
+        </div>
+
+        <!-- LOADING -->
+        <div class="loading" id="loading" style="display:none;">
+            <div class="spinner"></div>
+            <p>Loading weather data...</p>
+        </div>
+
+        <!-- ERROR MESSAGE -->
+        <div class="error-box" id="errorBox" style="display:none;"></div>
+
+        <!-- WEATHER DATA SECTION -->
+        <section id="weatherSection" style="display:none;">
+            <!-- GREETING MESSAGE -->
+            <div class="greeting-message" id="greetingMsg"></div>
+
+            <!-- CURRENT WEATHER CARD -->
+            <div class="weather-card">
+                <div class="weather-header">
+                    <div class="city-info">
+                        <h2 id="cityName">--</h2>
+                        <p id="dateTime">--</p>
+                    </div>
+                    <div class="weather-icon-main" id="weatherIcon">🌤️</div>
+                </div>
+
+                <div class="temp-display">
+                    <div class="temperature" id="temperature">--°</div>
+                    <div class="description" id="description">--</div>
+                </div>
+
+                <!-- SUNRISE/SUNSET -->
+                <div class="sun-times">
+                    <div class="sun-item">
+                        <i class="fas fa-sunrise"></i>
+                        <span id="sunrise">--:--</span>
+                    </div>
+                    <div class="sun-item">
+                        <i class="fas fa-sunset"></i>
+                        <span id="sunset">--:--</span>
+                    </div>
+                </div>
+
+                <!-- AI ASSISTANT -->
+                <div class="ai-card">
+                    <div class="ai-title">💡 Smart Tip</div>
+                    <p id="aiMessage">Analyzing weather...</p>
+                </div>
+
+                <!-- METRICS GRID -->
+                <div class="metrics-grid" id="metricsGrid"></div>
+            </div>
+
+            <!-- HOURLY FORECAST -->
+            <div class="forecast-section">
+                <h3>Hourly Forecast</h3>
+                <div class="hourly-container" id="hourlyContainer"></div>
+            </div>
+
+            <!-- 5-DAY FORECAST -->
+            <div class="forecast-section">
+                <h3>5-Day Forecast</h3>
+                <div class="forecast-grid" id="forecastGrid"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
