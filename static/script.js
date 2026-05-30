@@ -6,18 +6,35 @@ const APP = {
     apiKey: null
 };
 
-// Fetch API key from backend on page load
-window.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const res = await fetch('/api/config');
-        const config = await res.json();
+// Load API key from backend immediately
+fetch('/api/config')
+    .then(res => res.json())
+    .then(config => {
         APP.apiKey = config.api_key;
-        console.log('API Key loaded from Render');
-    } catch (e) {
-        console.error('Failed to load config:', e);
-    }
-});
+        console.log('✅ API Key Loaded:', APP.apiKey ? 'YES' : 'NO');
+        // Initialize app after API key is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+    })
+    .catch(err => {
+        console.error('❌ Failed to load API key:', err);
+        showError('Failed to load API key from server');
+    });
 
+function initApp() {
+    loadTheme();
+    loadHistory();
+    attachAllListeners();
+    
+    if (APP.apiKey) {
+        fetchWeather('London');
+    } else {
+        showError('⚠️ API key not available');
+    }
+}
 const DOM = {
     search: () => document.getElementById('searchInput'),
     geoBtn: () => document.getElementById('geoBtn'),
