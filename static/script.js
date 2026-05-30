@@ -6,6 +6,18 @@ const APP = {
     apiKey: null
 };
 
+// Fetch API key from backend on page load
+window.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const res = await fetch('/api/config');
+        const config = await res.json();
+        APP.apiKey = config.api_key;
+        console.log('API Key loaded from Render');
+    } catch (e) {
+        console.error('Failed to load config:', e);
+    }
+});
+
 const DOM = {
     search: () => document.getElementById('searchInput'),
     geoBtn: () => document.getElementById('geoBtn'),
