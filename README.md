@@ -57,13 +57,3 @@ python app.py
 
 [OpenWeatherMap API](https://openweathermap.org/api) - Free tier available
 
-## 📝 Notes
-
-- Geolocation permission required for auto-detection
-- Fallback to London if location access denied
-- Air quality data available in supported regions
-- Charts show 24-hour forecast data
-
----
-
-**Made with ❤️ using Flask & Chart.js**
