@@ -50,17 +50,54 @@ const DOM = {
 const API = 'https://api.openweathermap.org/data/2.5';
 
 // INIT
+// INIT
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🌤️ Weather Dashboard Ready');
     loadSettings();
     attachListeners();
     
+    // Fallback: check localStorage for API key
     const key = localStorage.getItem('api_key');
     if (key && !APP.apiKey) {
         APP.apiKey = key;
-        fetchWeather('London');
+        // Auto-detect location instead of London
+        autoDetectLocation();
     }
 });
+
+// Auto-detect user location on page load
+function autoDetectLocation() {
+    if (!navigator.geolocation) {
+        console.log('Geolocation not supported, loading London');
+        fetchWeather('London');
+        return;
+    }
+
+    showLoader();
+    navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+            try {
+                const url = `${API}/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&appid=${APP.apiKey}&units=metric`;
+                const res = await fetch(url);
+                const data = await res.json();
+                APP.data = data;
+                updateWeatherDisplay(data);
+                fetchForecast(data.coord.lat, data.coord.lon);
+                hideError();
+            } catch (e) {
+                console.log('Location fetch failed, loading London');
+                fetchWeather('London');
+            } finally {
+                hideLoader();
+            }
+        },
+        (error) => {
+            console.log('Location access denied, loading London');
+            fetchWeather('London');
+            hideLoader();
+        }
+    );
+}
 
 function attachListeners() {
     DOM.tempBtn().addEventListener('click', () => {
