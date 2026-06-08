@@ -18,6 +18,7 @@ A beautiful, real-time weather app with AI-powered insights and advanced feature
 
 ## 🚀 Quick Start
 
+
 1. Visit: **https://weather-dashboard-jua0.onrender.com**
 2. Allow location access
 3. View your weather instantly!
