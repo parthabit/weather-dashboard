@@ -3,7 +3,6 @@
 A beautiful, real-time weather app with AI-powered insights and advanced features.
 
 ## ✨ Features
-
 - 🔍 **Search Cities** - Find weather for any location
 - 📍 **Auto-Detect Location** - Get weather for your current location on load
 - 🌡️ **Temperature Toggle** - Switch between °C and °F
