@@ -11,7 +11,7 @@ A beautiful, real-time weather app with AI-powered insights and advanced feature
 - ⚠️ **Smart Alerts** - Warnings for extreme weather
 - 💨 **Air Quality Index** - Real-time AQI with health advice
 - 🌈 **Dynamic Themes** - 6 beautiful weather-based themes
-- 💾 **Search History** - Quick access to previous searches
+- 💾 **Search History** - Quick access to previous searches 
 - ⏰ **Hourly & 5-Day Forecast** - Detailed weather predictions
 - 💡 **AI Assistant** - Smart weather tips and recommendations
 
